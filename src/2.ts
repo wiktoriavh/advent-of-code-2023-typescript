@@ -23,7 +23,7 @@ const solution = (input: string): Solution => {
     return line.replace(/Game \d+:\s/gi, '');
   });
 
-  const grouped = games.reduce((acc, curr) => {
+  const fullGame = games.reduce((acc, curr) => {
     const rounds = curr.split(';');
     const game: Round = [];
     rounds.forEach((round) => {
@@ -38,7 +38,7 @@ const solution = (input: string): Solution => {
     return [...acc, game];
   }, [] as Game);
 
-  const points = grouped.map((round, index) => {
+  const points = fullGame.map((round, index) => {
     const isRoundValid = round.every((turn) => {
       const colors = Object.keys(turn);
       const isCountValid = colors.every((color) => {
@@ -50,9 +50,31 @@ const solution = (input: string): Solution => {
     return isRoundValid ? index + 1 : 0;
   });
 
+  const minimum = fullGame.map((round) => {
+    const minColors: Turn = {};
+    round.forEach((turn) => {
+      const colors = Object.keys(turn);
+      colors.forEach((color) => {
+        const count = turn[color as TurnKey]!;
+        if (minColors[color as TurnKey] === undefined) {
+          minColors[color as TurnKey] = count;
+        } else {
+          minColors[color as TurnKey] = Math.max(minColors[color as TurnKey]!, count);
+        }
+      });
+    });
+    return minColors;
+  });
+
+  
+
   return {
     part1: points.reduce((acc, curr) => acc + curr, 0).toString(),
-    part2: '',
+    part2: minimum.reduce((acc, curr) => {
+      const colors = Object.keys(curr);
+      const total = colors.reduce((acc, currColor) => acc * curr[currColor as TurnKey]!, 1);
+      return acc + total;
+    }, 0).toString(),
   };
 };
 
