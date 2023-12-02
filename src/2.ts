@@ -46,7 +46,7 @@ const solution = (input: string): Solution => {
         return count <= POSSIBLE[color as TurnKey]!;
       });
       return isCountValid;
-    })
+    });
     return isRoundValid ? index + 1 : 0;
   });
 
@@ -59,22 +59,28 @@ const solution = (input: string): Solution => {
         if (minColors[color as TurnKey] === undefined) {
           minColors[color as TurnKey] = count;
         } else {
-          minColors[color as TurnKey] = Math.max(minColors[color as TurnKey]!, count);
+          minColors[color as TurnKey] = Math.max(
+            minColors[color as TurnKey]!,
+            count,
+          );
         }
       });
     });
     return minColors;
   });
 
-  
-
   return {
     part1: points.reduce((acc, curr) => acc + curr, 0).toString(),
-    part2: minimum.reduce((acc, curr) => {
-      const colors = Object.keys(curr);
-      const total = colors.reduce((acc, currColor) => acc * curr[currColor as TurnKey]!, 1);
-      return acc + total;
-    }, 0).toString(),
+    part2: minimum
+      .reduce((acc, curr) => {
+        const colors = Object.keys(curr);
+        const total = colors.reduce(
+          (acc, currColor) => acc * curr[currColor as TurnKey]!,
+          1,
+        );
+        return acc + total;
+      }, 0)
+      .toString(),
   };
 };
 
