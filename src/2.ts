@@ -1,4 +1,3 @@
-import { type } from 'os';
 import { Solution } from './types';
 
 const POSSIBLE: Turn = {
