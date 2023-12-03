@@ -1,17 +1,11 @@
 import { Solution } from './types';
 
-type Position = {
-  [arrayNum: number]: {
-    [index: number]: true;
-  };
-};
-
 const solution = (input: string): Solution => {
   const lines = input.split('\n').map((line) => line.split(''));
 
-  const partNumber = new Map<string, string>();
+  const partNumbers: string[] = [];
 
-  function checkingSurroundings(arrayNum: number, index: number) {
+  function isPartNumber(arrayNum: number, index: number) {
     const surroundings = [
       [arrayNum - 1, index - 1],
       [arrayNum - 1, index],
@@ -22,53 +16,51 @@ const solution = (input: string): Solution => {
       [arrayNum + 1, index],
       [arrayNum + 1, index + 1],
     ];
-    surroundings.forEach(([x, y]) => {
-      if (isNumber(lines[x][y])) {
-        const startingIndex = goToStartingIndex(y, lines[x]);
-        if (partNumber.has(`${x},${startingIndex}`)) return;
-        const fullNumber = [...getFullNumber(startingIndex, lines[x])].join('');
-        partNumber.set(`${x},${startingIndex}`, fullNumber);
+
+    let isPartNumber = false;
+
+    for (let i = 0; i < surroundings.length; i++) {
+      const [x, y] = surroundings[i];
+      const withinBounds =
+        x >= 0 && x < lines.length && y >= 0 && y < lines[x].length;
+      if (!withinBounds) {
+        continue;
       }
-    });
+      if (isSymbol(lines[x][y])) {
+        isPartNumber = true;
+        break;
+      }
+    }
+    return isPartNumber;
   }
 
   lines.forEach((line, x) => {
-    line.forEach((symbol, y) => {
-      if (isSymbol(symbol)) {
-        checkingSurroundings(x, y);
+    let foundNumber = '';
+    let isFoundPartNumber = false;
+    for (let i = 0; i < line.length; i++) {
+      const num = line[i];
+      if (isNumber(num)) {
+        foundNumber += num;
+        if (!isFoundPartNumber) {
+          isFoundPartNumber = isPartNumber(x, i);
+        }
+      } else {
+        if (isFoundPartNumber) {
+          partNumbers.push(foundNumber);
+        }
+        isFoundPartNumber = false;
+        foundNumber = '';
       }
-    });
+    }
   });
 
-  const values = partNumber.values();
-  const sum = [...values].reduce((acc, curr) => acc + Number(curr), 0);
-
-  return { part1: sum.toString(), part2: '0' };
+  return {
+    part1: partNumbers.reduce((acc, curr) => acc + Number(curr), 0).toString(),
+    part2: '0',
+  };
 };
 
 export default solution;
-
-function goToStartingIndex(index: number, arr: string[]) {
-  let startingIndex = index;
-  const prev = arr[index - 1];
-  if (isNumber(prev)) {
-    startingIndex--;
-    goToStartingIndex(index, arr);
-  }
-  return startingIndex;
-}
-
-function* getFullNumber(index: number, arr: string[]) {
-  while (true) {
-    const number = arr[index];
-    if (isNumber(number)) {
-      yield number;
-      index++;
-    } else {
-      break;
-    }
-  }
-}
 
 function isNumber(symbol: string) {
   const nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
