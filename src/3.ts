@@ -17,32 +17,19 @@ const solution = (input: string): Solution => {
       [arrayNum + 1, index + 1],
     ];
 
-    let isPartNumber = false;
-
-    for (let i = 0; i < surroundings.length; i++) {
-      const [x, y] = surroundings[i];
-      const withinBounds =
-        x >= 0 && x < lines.length && y >= 0 && y < lines[x].length;
-      if (!withinBounds) {
-        continue;
-      }
-      if (isSymbol(lines[x][y])) {
-        isPartNumber = true;
-        break;
-      }
-    }
-    return isPartNumber;
+    return surroundings.some(([x,y]) => isSymbol(lines[x]?.[y]))
   }
 
-  lines.forEach((line, x) => {
+  lines.forEach((line, y) => {
     let foundNumber = '';
     let isFoundPartNumber = false;
-    for (let i = 0; i < line.length; i++) {
-      const num = line[i];
+    for (let x = 0; x <= line.length; x++) {
+      const num = line[x];
+
       if (isNumber(num)) {
         foundNumber += num;
         if (!isFoundPartNumber) {
-          isFoundPartNumber = isPartNumber(x, i);
+          isFoundPartNumber = isPartNumber(y, x);
         }
       } else {
         if (isFoundPartNumber) {
@@ -70,5 +57,6 @@ function isNumber(symbol: string) {
 function isSymbol(symbol: string) {
   if (symbol === '.') return false;
   if (isNumber(symbol)) return false;
+  if (!symbol) return false;
   return true;
 }
