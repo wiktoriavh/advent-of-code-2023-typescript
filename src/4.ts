@@ -15,25 +15,50 @@ const solution = (input: string): Solution => {
       ),
     );
 
-  const result = lines.reduce((acc, [winning, drawn]) => {
-    let points = 0;
+  const wonCards = new Map<number, number>();
 
-    drawn.forEach((card) => {
-      if (winning.includes(card)) {
-        if (points === 0) {
-          points += 1;
-        } else {
-          points *= 2;
+  const result = lines.reduce(
+    (acc, [winning, drawn], index) => {
+      let points = 0;
+      let amount = 0;
+      let cardNumber = index + 1;
+
+      drawn.forEach((card) => {
+        if (winning.includes(card)) {
+          amount += 1;
+          if (points === 0) {
+            points += 1;
+          } else {
+            points *= 2;
+          }
         }
-      }
-    });
+      });
 
-    return acc + points;
-  }, 0);
+      const repeats = wonCards.get(cardNumber) || 0;
+      let result = 0;
+
+      for (let i = 1; i <= repeats + 1; i += 1) {
+        for (let i = 1; i <= amount; i += 1) {
+          if (wonCards.has(cardNumber + i)) {
+            wonCards.set(cardNumber + i, wonCards.get(cardNumber + i)! + 1);
+          } else {
+            wonCards.set(cardNumber + i, 1);
+          }
+        }
+        result++;
+      }
+
+      return {
+        part1: acc.part1 + points,
+        part2: acc.part2 + result,
+      };
+    },
+    { part1: 0, part2: 0 },
+  );
 
   return {
-    part1: result.toString(),
-    part2: '',
+    part1: result.part1.toString(),
+    part2: result.part2.toString(),
   };
 };
 
