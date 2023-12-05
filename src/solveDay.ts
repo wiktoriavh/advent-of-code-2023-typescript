@@ -20,5 +20,5 @@ export async function solveDay(day: number): Promise<Solution> {
   }
 }
 
-const result = await solveDay(4);
+const result = await solveDay(5);
 console.log(result);

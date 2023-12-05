@@ -10,7 +10,7 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11`;
 const RESULT1 = '13';
 const RESULT2 = '30';
 
-describe('day 3', () => {
+describe('day 4', () => {
   it('should solve part 1', () => {
     const result = solution(EXAMPLE);
     expect(result.part1).toBe(RESULT1);
