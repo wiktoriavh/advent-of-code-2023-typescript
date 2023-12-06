@@ -53,7 +53,7 @@ const solution = (input: string): Solution => {
   let next = 0;
   const result = seeds.reduce((acc, seed) => {
     next = seed;
-    LIST.forEach((item, index) => {
+    LIST.forEach((item) => {
       const list = almanac.get(item);
       if (!list) {
         return;
@@ -92,6 +92,52 @@ const solution = (input: string): Solution => {
     return next;
   }, 0);
 
+  let result2 = 0;
+  for (let i = 0; i < seeds.length; i += 2) {
+    const startSeed = seeds[i];
+    const range = seeds[i + 1];
+    const maxSeed = startSeed + range - 1;
+    let next = startSeed;
+
+    let isStartFound = false;
+    let isEndFound = false;
+    LIST.forEach((item) => {
+      const list = almanac.get(item);
+      if (!list) {
+        return;
+      }
+
+      let isFound = false;
+      const entry = list.entries();
+      let difference = 0;
+
+      while (isStartFound && isEndFound) {
+        const nextEntry = entry.next();
+
+        if (nextEntry.done) {
+          break;
+        }
+        const {
+          value: [start, [max, diff]],
+        } = nextEntry;
+
+        isStartFound = isBetween(start, next, max);
+        isEndFound = isBetween(start, maxSeed, max);
+
+        if (isBetween(start, next, max)) {
+          console.log(startSeed, item, start, next, max, diff);
+          difference = diff;
+          isFound = true;
+        }
+      }
+
+      next = next + difference;
+    });
+    if (result2 === 0 || result2 < next) {
+      result2 = next;
+    }
+  }
+
   function difference(source: number, destination: number): number {
     return source - destination;
   }
@@ -102,7 +148,7 @@ const solution = (input: string): Solution => {
 
   return {
     part1: result.toString(),
-    part2: '',
+    part2: result2.toString(),
   };
 };
 

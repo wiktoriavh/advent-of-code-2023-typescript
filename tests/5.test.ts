@@ -35,14 +35,14 @@ humidity-to-location map:
 60 56 37
 56 93 4`;
 const RESULT1 = '35';
-const RESULT2 = '';
+const RESULT2 = '46';
 
 describe('day 5', () => {
   it('should solve part 1', () => {
     const result = solution(EXAMPLE);
     expect(result.part1).toBe(RESULT1);
   });
-  it.skip('should solve part 2', () => {
+  it('should solve part 2', () => {
     const result = solution(EXAMPLE);
     expect(result.part2).toBe(RESULT2);
   });
