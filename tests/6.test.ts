@@ -4,7 +4,7 @@ import solution from '../src/5';
 const EXAMPLE = `Time:      7  15   30
 Distance:  9  40  200`;
 const RESULT1 = '288';
-const RESULT2 = '46';
+const RESULT2 = '';
 
 describe('day 6', () => {
   it('should solve part 1', () => {
