@@ -25,11 +25,32 @@ const solution = (input: string): Solution => {
     result.push(amountOfTime);
   });
 
-  console.log(result);
+  const newTimes = parseInt(
+    time.reduce((acc, time) => acc + time.toString(), ''),
+    10,
+  );
+  const newDistance = parseInt(
+    distance.reduce((acc, dist) => acc + dist.toString(), ''),
+    10,
+  );
+
+  const result2: number[] = [];
+  let speed = 0;
+  const d = newDistance;
+  let amountOfTime = 0;
+  for (let i = 1; i < newTimes; i++) {
+    speed++;
+    const remainingTime = newTimes - i;
+    const distanceMade = speed * remainingTime;
+    if (distanceMade > d) {
+      amountOfTime++;
+    }
+  }
+  result2.push(amountOfTime);
 
   return {
     part1: result.reduce((a, b) => a * b, 1).toString(),
-    part2: '',
+    part2: result2.reduce((a, b) => a * b, 1).toString(),
   };
 };
 
