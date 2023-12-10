@@ -12,13 +12,12 @@ export async function solveDay(day: number): Promise<Solution> {
       solutionPath.replace('{{day}}', String(day))
     );
     const result = await dayFunction.default(input);
-    console.log(result);
     return result as Solution;
   } catch (error) {
-    console.error(error);
+    console.error('ERROR: ', error);
     throw error;
   }
 }
 
-const result = await solveDay(6);
+const result = await solveDay(7);
 console.log(result);
