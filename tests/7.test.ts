@@ -1,5 +1,5 @@
 import { expect, describe, it } from 'vitest';
-import solution from '../src/5';
+import solution from '../src/7';
 
 const EXAMPLE = `32T3K 765
 T55J5 684

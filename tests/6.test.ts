@@ -1,5 +1,5 @@
 import { expect, describe, it } from 'vitest';
-import solution from '../src/5';
+import solution from '../src/6';
 
 const EXAMPLE = `Time:      7  15   30
 Distance:  9  40  200`;
