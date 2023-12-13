@@ -20,20 +20,52 @@ const solution = (input: string): Solution => {
     nodes.set(start, destinations as Node);
   });
 
-  let steps = 0;
-  let nodeName = 'AAA';
+  function getStepsPart1() {
+    let steps = 0;
+    let nodeName = 'AAA';
 
-  while (nodeName !== 'ZZZ') {
-    const directionIndex = steps % directions.length;
-    const node = nodes.get(nodeName)!;
-    nodeName = node[directions[directionIndex]];
-    steps++;
+    while (nodeName !== 'ZZZ') {
+      const directionIndex = steps % directions.length;
+      const node = nodes.get(nodeName)!;
+      nodeName = node[directions[directionIndex]];
+      steps++;
+    }
+
+    return steps;
   }
 
-  console.log({ steps });
+  function getStepsPart2() {
+    const gcd = (a: number, b: number): number => {
+      if (b === 0) {
+        return a;
+      }
+      return gcd(b, a % b);
+    };
 
-  const part1 = steps.toString();
-  const part2 = '';
+    const lcm = (a: number, b: number): number => {
+      return (a * b) / gcd(a, b);
+    };
+
+    const startingNodes = [...nodes.keys()].filter((key) => key.endsWith('A'));
+
+    const stepsPerNode = new Map<string, number>();
+
+    startingNodes.forEach((nodeName) => {
+      let steps = 0;
+      while (!nodeName.endsWith('Z')) {
+        const directionIndex = steps % directions.length;
+        const node = nodes.get(nodeName)!;
+        nodeName = node[directions[directionIndex]];
+        steps++;
+      }
+      stepsPerNode.set(nodeName, steps);
+    });
+
+    return [...stepsPerNode.values()].reduce(lcm);
+  }
+
+  const part1 = getStepsPart1().toString();
+  const part2 = getStepsPart2().toString();
   return { part1, part2 };
 };
 
