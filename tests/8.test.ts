@@ -24,7 +24,7 @@ XXX = (XXX, XXX)`;
 const RESULT1 = '2';
 const RESULT2 = '6';
 
-describe('day 7', () => {
+describe('day 8', () => {
   it('should solve part 1', () => {
     const result = solution(EXAMPLE);
     expect(result.part1).toBe(RESULT1);

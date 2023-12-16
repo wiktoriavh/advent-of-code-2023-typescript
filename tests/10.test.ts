@@ -1,14 +1,16 @@
 import { expect, describe, it } from 'vitest';
-import solution from '../src/9';
+import solution from '../src/10';
 
-const EXAMPLE = `0 3 6 9 12 15
-1 3 6 10 15 21
-10 13 16 21 30 45`;
+const EXAMPLE = `.....
+.F-7.
+.|.|.
+.L-J.
+.....`;
 
 const RESULT1 = '114';
 const RESULT2 = '6';
 
-describe('day 9', () => {
+describe('day 10', () => {
   it('should solve part 1', () => {
     const result = solution(EXAMPLE);
     expect(result.part1).toBe(RESULT1);
